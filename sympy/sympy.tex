@@ -1,0 +1,218 @@
+\documentclass[8pt,a4paper,notitlepage]{scrartcl}
+\usepackage[left=0.5cm, right=0.5cm, top=0.5cm, bottom=0.5cm]{geometry}
+\usepackage[utf8]{inputenc} % for direct umlaut input
+\usepackage[T1]{fontenc}    % for umlaut encoding
+\usepackage[english]{babel}
+\usepackage[pdfusetitle]{hyperref}
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{amssymb,amsmath,graphicx,xcolor,url,qrcode,bm,physics,booktabs,dsfont,slashed,multicol}
+\usepackage{verbatim}
+\usepackage[most]{tcolorbox}
+\renewcommand{\familydefault}{\sfdefault}
+\parskip = 10pt plus 30pt minus 8pt
+% NEW COMMANDS %%%%%%%%%%%%%%%%%%%%%%%%
+\colorlet{boxBG}{black!3!white}
+\colorlet{boxFrame}{black!12!white}
+\colorlet{boxTitle}{black!85!white}
+\colorlet{mainFont}{black!85!white}
+\colorlet{codeFont}{red!85!black}
+\newcommand{\im}[0]{\mathrm{i}}
+\newcommand{\eu}[0]{\mathrm{e}}
+\renewcommand{\vec}[1]{\bm{#1}}
+\renewcommand{\Tr}[1]{\operatorname{Tr}\left\{#1\right\}}
+\newcommand{\id}[0]{\mathds 1}
+\newcommand{\codebox}[2]{\begin{tcolorbox}[
+  colback=boxBG,
+  colframe=boxFrame,
+  coltitle=mainFont,
+  coltext=mainFont,
+  left=1pt,
+  right=1pt,
+  top=1pt,
+  bottom=1pt,
+  bottomtitle=0mm,
+  toptitle=0mm,
+  title=\textbf{#1},
+  halign title=left, 
+  after={\par}]
+#2
+\end{tcolorbox}}
+\newcommand{\mycode}[2]{#1: \\\color{codeFont}\texttt{> #2}\color{mainFont}}
+\newcommand{\mylineLong}[0]{\color{boxFrame}\hspace{-1.6mm}\rule[0.6mm]{98mm}{.5mm}\color{mainFont}}
+\newcommand{\mylineShort}[0]{\color{boxFrame}\rule[0.6mm]{60.5mm}{.4mm}\color{mainFont}}
+\newcommand{\newitem}[0]{\\[3pt]}
+% BEGIN DOCUMENT %%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\color{mainFont}
+\begin{multicols*}{3}
+[
+{\noindent\LARGE \textbf{\href{https://www.sympy.org/en/index.html}{SymPy v1.8} Cheat Sheet}} \qquad\texttt{import sympy as sy}
+]
+
+\codebox{Create Symbols}{
+\mycode{define symbols}{a, b = sy.symbols('a b')}\newitem
+\mycode{define a range of symbols}{a, b, c, d, e = sy.symbols('a:e')}\newitem
+\mycode{include Greek symbols}{alpha = sy.symbols(r'\textbackslash alpha')}\newitem
+\mycode{include subscripts}{a1 = sy.symbols('a\_1')}\newitem
+\mycode{define a range of subscripted symbols}{a1, a2, a3 = sy.symbols('a\_(1:4)')}\newitem
+%\mycode{define a positive symbol}{a = sy.symbols('a', pos=True)}\newitem
+%\mycode{define an integer symbol}{a = sy.symbols('a', integer=True)}\newitem
+%\mycode{define a real symbol}{a = sy.symbols('a', real=True)}\newitem
+%\mycode{define a non-commuting symbol}{a = sy.symbols('a', commutative=False)}\newitem
+\mycode{define symbols using assumptions}{a = sy.symbols('a', [key]=True/False)}\\
+where \texttt{[key]} can be: even, odd, integer, rational, real, imaginary, complex, prime, positive, negative, nonpositive, nonnegative, commutative, \ldots
+}
+
+\codebox{Mathematical Constants}{
+\mycode{return $\pi \approx 3.14159$}{sy.pi}\newitem
+\mycode{return Euler's number $\eu \approx 2.71828$}{sy.E}\newitem
+\mycode{return the imaginary unit $\im^2 = -1$}{sy.I}\newitem
+\mycode{return infinity $\infty$}{sy.oo}
+}
+
+\codebox{Mathematical Functions}{
+\mycode{square root $\sqrt x$}{sy.sqrt(x)}\newitem
+\mycode{absolute value $|x|$}{sy.abs(x)}\newitem
+\mycode{return the sign of a number $\text{sgn}(x)$}{sy.sign(x)}\newitem
+\mycode{trigonometric functions (sin, cos, tan, cot, \ldots)}{sy.sin(x)}\newitem
+\mycode{inverse trigonometric functions}{sy.asin(x)}\newitem
+\mycode{hyperbolic functions}{sy.sinh(x)}\newitem
+\mycode{area hyperbolic functions}{sy.asinh(x)}\newitem
+\mycode{inverse tangent with correct quadrant}{sy.atan2(y, x)}\newitem
+\mycode{exponential function $\eu^x$}{sy.exp(x)}\newitem
+\mycode{natural logarithm $\ln(x)$}{sy.log(x)}\newitem
+\mycode{base-$b$ logarithm $\log_b(x)$}{sy.log(x, b)}
+}
+
+%\noindent\textbf{Calculus}
+%$\rule[0.8mm]{0.26\textwidth}{0.3mm}$
+
+\codebox{Algebra}{
+\mycode{return the greatest common divisor}{sy.gcd(x, y)}\newitem
+\mycode{return the least common multiple}{sy.lcm(x, y)}\newitem
+\mycode{return the real/imaginary part of $x$}{sy.re(x)\\> sy.im(x)}\newitem
+\mycode{perform a polynomial division}{sy.div(x**2 - 4 + x, x-2)}
+}
+
+\codebox{Solve Equations}{
+\mycode{solve $f(x)=0$}{sy.solve(f, x)}\newitem
+\mycode{solve system of equ's $f(x,y)=0$, $g(x,y)=0$}{sy.solve([f, g], [x, y])}\newitem
+\mycode{solve differential equation}{f = sy.Function('f')\\> sy.dsolve(sy.diff(f(x), x) - x, f(x))}
+}
+
+%\codebox{Calculus: Derivatives \& Integrals}{
+%\mycode{take the derivative of $f$ with respect to $x$}{sy.diff(f, x)}\newitem
+%\mycode{take the $n$-th derivative of $f$ with respect to $x$}{sy.diff(f, x, n)}\newitem
+%\mycode{take the derivative of $f$ with respect to $x$ and $y$}{sy.diff(f, x, y)}\\
+%\mylineShort\\
+%\mycode{integrate $f$ with respect to $x$}{sy.integrate(f, x)}\newitem
+%\mycode{integrate $f$ with respect to $x$ from \texttt{a} to \texttt{b}}{sy.integrate(f, (x, a, b))}
+%}
+
+\codebox{Linear Algebra: Vectors}{
+\mycode{create a vector via its components $v_i$}{sy.Matrix([1, 2, 3])}\newitem
+\mycode{inner dot product of two vectors $\vec v\cdot\vec w$}{v.dot(w)}\newitem
+\mycode{cross product of two 3-vectors $\vec v\times\vec w$}{v.cross(w)}\newitem
+\mycode{return the norm of a vector $|\vec v|=\sqrt{\vec v\cdot\vec v}$}{v.norm()}\newitem
+\mycode{return the normalized vector $\hat{\vec v} = \vec v / |\vec v|$}{v.normalized()}
+}
+
+\codebox{Linear Algebra: Create Matrices}{
+\mycode{$n\times n$ identity matrix $\id_n$}{sy.eye(n)}\newitem
+\mycode{$m\times n$ empty matrix, $M_{ij}=0\;\forall i,j$}{sy.zeros(m, n)}\newitem
+\mycode{$m\times n$ matrix filled with 1, $M_{ij}=1\;\forall i,j$}{sy.ones(m, n)}\newitem
+\mycode{define a diagonal matrix via its entries}{sy.diag(1, 2, 3)}\newitem
+\mycode{define a matrix via its entries $M_{ij}$}{sy.Matrix([[1, 2],\\. \ \ \ \ \ \ \ \ \ \ [3, 4]])}\newitem
+%\mycode{define a matrix via its entries}{sy.Matrix([[1, 2],[3, 4]])}\newitem
+\mycode{\ldots via a lambda function, $M_{ij}=2i+j$}{sy.Matrix(m, n, lambda i,j:\ 2*i + j)}\newitem
+\mycode{\ldots via a dyadic product $M_{ij}=v_iw_j$}{sy.Matrix(m, n, lambda i,j:\ v[i]*w[j])}
+}
+
+\codebox{Linear Algebra: Matrix Properties}{
+\mycode{return the $n$-th row/column of a matrix $M$}{M.row(n) \# n = 0, 1, ...\\> M.col(n)}\newitem
+\mycode{return the shape (i.e. $m\times n$) of a matrix $M$}{M.shape}\newitem
+\mycode{return the rank of a matrix $M$}{M.rank()}\newitem
+\mycode{return the trace of a matrix $\Tr{M}$}{M.trace()}\newitem
+\mycode{return the determinant of a matrix $\det{M}$}{M.det()}
+}
+
+\codebox{Linear Algebra: Manipulate Matrices}{
+\mycode{return the matrix inverse $M^{-1}$}{M.inv()}\newitem
+\mycode{return the matrix transpose $M^T$}{M.T}\newitem
+\mycode{return the complex conjugate all entries $M^*$}{M.C}\newitem
+\mycode{return the Hermitian conjugate $M^\dagger=(M^T)^*$}{M.H}\newitem
+\mycode{delete the $n$-th row/column (nothing returned)}{M.row\_del(n) \# n = 0, 1, ...\\> M.col\_del(n)}
+}
+
+\codebox{Linear Algebra: Matrices and Vectors}{
+\mycode{return the matrix-vector product $M \vec v$}{M * v}\newitem
+\mycode{return the matrix-matrix product $M N$}{M * N}\newitem
+\mycode{diagonalize $M$ such that $D = P^{-1} M P$}{P, D = M.diagonalize()}\newitem
+\mycode{return eigenvalues as a dict with multiplicities}{M.eigenvals()}\newitem
+\mycode{return eigenvalues as a list}{M.eigenvals(multiple=True)}\newitem
+\mycode{return eigenvalues, multiplicities, eigenvectors}{M.eigenvects()}
+}
+
+\codebox{Calculus: Derivatives}{
+\mycode{take the derivative of $f$ with respect to $x$}{sy.diff(f, x)}\newitem
+\mycode{take the $n$-th derivative of $f$ with respect to $x$}{sy.diff(f, x, n)}\newitem
+\mycode{take the derivative of $f$ with respect to $x$ and $y$}{sy.diff(f, x, y)}
+}
+
+\codebox{Calculus: Integrals}{
+\mycode{integrate $f$ with respect to $x$}{sy.integrate(f, x)}\newitem
+\mycode{integrate $f$ with respect to $x$ from \texttt{a} to \texttt{b}}{sy.integrate(f, (x, a, b))}
+}
+
+\codebox{Limits}{
+\mycode{take the limit of $f$ where $x$ goes to $a$}{sy.limit(f, x, a)}\newitem
+\mycode{take the limit of $f$ where $x$ goes to $a_+$}{sy.limit(f, x, a, dir='+')}
+}
+
+\codebox{Taylor Series}{
+\mycode{expand $f(x)$ around $a$ up to $\mathcal O(n)$}{f.series(x, a, n)}\newitem
+\mycode{\ldots approaching the number from above}{f.series(x, a, n, dir='+')}\newitem
+\mycode{\ldots and remove the $\mathcal O(n)$}{f.series(x, a, n).removeO()}
+}
+
+\codebox{Discrete Mathematics}{
+\mycode{perform discrete sum $\sum_{n=a}^{b}f$}{sy.summation(f, (n, a, b))}\newitem
+\mycode{perform product $\prod_{n=a}^{b}f$}{sy.product(f, (n, a, b))}\newitem
+\mycode{return the factorial $n!$}{sy.factorial(n)}\newitem
+\mycode{return the binomial coefficient $\binom{n}{k}$}{sy.binomial(n, k)}\newitem
+\mycode{return the $i$-th prime}{sy.prime(i)}\newitem
+\mycode{return the next prime greater than $n$}{sy.nextprime(n)}\newitem
+\mycode{return the Kronecker delta $\delta_{ij}$}{sy.KroneckerDelta(i, j)}\newitem
+\mycode{return the Levi--Civita symbol $\epsilon_{ijk}$}{sy.LeviCivita(i, j, k)}
+}
+
+\codebox{Lambdify}{
+\mycode{create a numerical function $f(x,y,z)=x+yz$}{f = sy.lambdify([x, y, z], x + y*z)}
+}
+
+
+\codebox{Miscellaneous}{
+\mycode{get help}{help(sy.asinh)}\newitem
+\mycode{simplify an expression $f$}{sy.simplify(f)}\newitem
+\mycode{substitute $x$ for $a$ in $f$}{f.subs(x, a)}\newitem
+\mycode{define fraction $\tfrac{p}{q}$ analytically}{sy.Rational(p, q)}\newitem
+\mycode{test for equality $a=b$ at random points}{a.equals(b)}\newitem
+\mycode{force numerical evaluation of $f$}{f.n()}\newitem
+\mycode{\ldots and set very small numbers to zero}{f.n(chop=True)}\newitem
+\mycode{\ldots and round to $d$ digits}{f.n(d)}
+}
+
+\end{multicols*}
+
+
+\end{document}
+
+
+
+
+
+
+
